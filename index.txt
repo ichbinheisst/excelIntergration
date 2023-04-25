@@ -1,0 +1,73 @@
+const xlsx = require("xlsx");
+const path = require("path");
+
+const workbook = xlsx.readFile("teste.xlsx");
+const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+const data = [];
+const columns = [];
+
+const obj = [];
+
+let mod = [];
+
+for (const key in worksheet) {
+  let item = worksheet[key];
+
+  const letter = key.split("")[0];
+
+  if (!columns.some((let) => let == letter) && !letter.includes("!")) {
+    columns.push(letter);
+  }
+  
+  const column = +key.split("").splice(1, 2).join();
+  if (!isNaN(column) && !data.some((d) => d == column)) {
+    data.push(column);
+  }
+}
+
+
+
+
+const response = [];
+for (let index = 1; index <= data.length; index++) {
+  if (index == 1) {
+  } else {
+    const eleObject = columns.reduce((acc, curr, i) => {
+      acc[curr + 1] = worksheet[String(curr) + index].v;
+      return acc;
+    }, {});
+
+    obj.push(eleObject);
+
+    const element = {
+      [worksheet["A" + 1].v]: worksheet["A" + index].v,
+      [worksheet["B" + 1].v]: worksheet["B" + index].v,
+      [worksheet["C" + 1].v]: worksheet["C" + index].v,
+      [worksheet["D" + 1].v]: worksheet["D" + index].v,
+    };
+    response.push(element);
+  }
+
+
+
+
+
+
+
+
+
+ mod= obj.map((el, index) => {
+    const keys  =  Object.keys(el);
+   keys.forEach((e)=> {
+        console.log(worksheet[e].v)
+   })
+     
+    
+  });
+}
+
+//console.log(obj);
+
+//console.log(response)
+
+
